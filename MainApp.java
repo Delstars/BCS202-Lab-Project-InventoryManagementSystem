@@ -7,6 +7,7 @@ public class MainApp {
     public static void main(String[] args) {
 
         InventoryManager manager = new InventoryManager();
+        manager.loadFromFile();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -46,6 +47,7 @@ public class MainApp {
                             } else {
                                 Product p = new Product(id, name, price, quantity);
                                 manager.addProduct(p);
+                                manager.saveToFile();
                             }
                         } catch (InvalidProductException e) {
                             System.err.println("Error: " + e.getMessage());
@@ -64,15 +66,15 @@ public class MainApp {
                         System.out.print("Enter Product ID to update: ");
                         String updateId = scanner.nextLine();
 
-                        // The manual specifically asks to update price and quantity 
                         System.out.print("Enter new price: ");
                         double newPrice = scanner.nextDouble();
                         System.out.print("Enter new quantity: ");
                         int newQty = scanner.nextInt();
-                        scanner.nextLine(); // consume newline
+                        scanner.nextLine(); 
 
                         try {
                             manager.updateProduct(updateId, newPrice, newQty);
+                            manager.saveToFile();
                         } catch (ProductNotFoundException e) {
                             System.err.println("Error: " + e.getMessage());
                         }
@@ -84,6 +86,7 @@ public class MainApp {
 
                         try {
                             manager.deleteProduct(deleteId);
+                            manager.saveToFile();
                         } catch (ProductNotFoundException e) {
                             System.err.println("Error: " + e.getMessage());
                         }
@@ -101,6 +104,7 @@ public class MainApp {
                         break;
 
                     case 6:
+                        manager.saveToFile();
                         System.out.println("Exiting system...");
                         System.exit(0);
                         break;
