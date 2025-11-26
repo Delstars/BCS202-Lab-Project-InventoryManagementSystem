@@ -23,18 +23,18 @@ public class InventoryManager {
         }
         return -1;
     }
-
-    public void addProduct(Product product) throws InvalidProductException {
-        if (productCount < MAX_CAPACITY) {
-            inventory[productCount] = product;
-            productCount++;
-            System.out.println(product.getName() + " has been added to inventory.");
-            saveToFile(); 
-        } else {
+   public void addProduct(Product product) throws InvalidProductException {
+        if (productCount >= MAX_CAPACITY) {
             throw new InvalidProductException("Inventory is full. Cannot add more products.");
         }
+        if (findProductIndex(product.getProductId()) != -1) {
+            throw new InvalidProductException("Error: Product ID " + product.getProductId() + " already exists!");
+        }
+        inventory[productCount] = product;
+        productCount++;
+        System.out.println(product.getName() + " has been added to inventory.");
+        saveToFile(); 
     }
-
     public void viewAllProducts() throws ProductNotFoundException {
         if (productCount == 0) {
             throw new ProductNotFoundException("No products found in inventory.");
